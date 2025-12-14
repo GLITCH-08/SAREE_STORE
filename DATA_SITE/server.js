@@ -73,7 +73,7 @@ app.get("/api/products", async (req, res) => {
 });
 
 // start server
-const port = process.env.PORT || 4000;
+const port = process.env.DATA_SITE_PORT || 4000;
 app.listen(port, () => {
   console.log(`🚀 Server listening on port ${port}`);
   console.log(`Open http://localhost:${port} in your browser`);
