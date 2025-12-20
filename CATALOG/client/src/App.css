@@ -3,58 +3,78 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: #000000;
 }
 
 .app-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  background: linear-gradient(180deg, #1a1a1a 0%, #000000 100%);
+  border-bottom: 2px solid var(--color-gold);
+  color: #ffffff;
   text-align: center;
-  padding: 3rem 2rem;
-  margin-bottom: 2rem;
+  padding: 2.5rem 2rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
 }
 
 .app-header h1 {
   margin: 0 0 0.5rem 0;
   font-size: 3rem;
   font-weight: 700;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  color: var(--color-gold);
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
 }
 
 .app-header p {
   margin: 0;
-  font-size: 1.2rem;
-  opacity: 0.9;
+  font-size: 1rem;
+  color: var(--color-gray);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 300;
 }
 
 .app-main {
   flex: 1;
-  padding: 0 1rem;
+  padding: 0;
+  display: flex;
 }
 
 .app-footer {
-  background: #343a40;
-  color: white;
+  background: #0a0a0a;
+  border-top: 1px solid var(--color-gold);
+  color: var(--color-gray);
   text-align: center;
   padding: 2rem;
-  margin-top: 3rem;
+  margin-top: 0;
 }
 
 .app-footer p {
   margin: 0;
-  opacity: 0.8;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
   .app-header {
-    padding: 2rem 1rem;
+    padding: 1.5rem 1rem;
   }
-  
+
   .app-header h1 {
-    font-size: 2rem;
+    font-size: 1.8rem;
+    letter-spacing: 2px;
   }
-  
+
   .app-header p {
-    font-size: 1rem;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+  }
+
+  .app-main {
+    flex-direction: column;
   }
 }

@@ -1,78 +1,28 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProductCard from './ProductCard';
+import FilterSidebar from './FilterSidebar';
 import { productService } from '../services/api';
 import './ProductList.css';
 
 const ProductList = () => {
-  const [products, setProducts] = useState([]);
+  const [allProducts, setAllProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isPaused, setIsPaused] = useState(false);
-  const containerRef = useRef(null);
-  const animationRef = useRef(null);
-  const isPausedRef = useRef(false);
 
   useEffect(() => {
     fetchProducts();
   }, []);
-
-  useEffect(() => {
-    if (products.length > 0) {
-      startScrollAnimation();
-    }
-    
-    return () => {
-      if (animationRef.current) {
-        cancelAnimationFrame(animationRef.current);
-      }
-    };
-  }, [products]);
-
-  const startScrollAnimation = () => {
-    const container = containerRef.current;
-    if (!container) return;
-
-    const cardWidth = 450 + 32; // card width + gap (2rem = 32px)
-    const speed = 1; // pixels per frame
-    let currentTranslate = 0;
-
-    const animate = () => {
-      if (!isPausedRef.current && products.length > 0) {
-        currentTranslate -= speed;
-        
-        // When the first card is completely off screen, reset and move it to the end
-        if (Math.abs(currentTranslate) >= cardWidth) {
-          // First, compensate the position BEFORE moving the card
-          currentTranslate += cardWidth;
-          
-          // Then move the first card to the end
-          const firstCard = container.firstElementChild;
-          if (firstCard) {
-            // Apply the corrected transform immediately to prevent wobble
-            container.style.transform = `translateX(${currentTranslate}px)`;
-            // Then move the DOM element
-            container.appendChild(firstCard);
-          }
-        } else {
-          // Normal transform update
-          container.style.transform = `translateX(${currentTranslate}px)`;
-        }
-      }
-      
-      animationRef.current = requestAnimationFrame(animate);
-    };
-
-    animationRef.current = requestAnimationFrame(animate);
-  };
 
   const fetchProducts = async () => {
     try {
       setLoading(true);
       setError(null);
       const response = await productService.getAllProducts();
-      
+
       if (response.success) {
-        setProducts(response.data);
+        setAllProducts(response.data);
+        setFilteredProducts(response.data);
       } else {
         setError('Failed to fetch products');
       }
@@ -82,6 +32,10 @@ const ProductList = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleFilterChange = (filtered) => {
+    setFilteredProducts(filtered);
   };
 
   const handleRetry = () => {
@@ -111,7 +65,7 @@ const ProductList = () => {
     );
   }
 
-  if (!products || products.length === 0) {
+  if (!allProducts || allProducts.length === 0) {
     return (
       <div className="empty-container">
         <div className="empty-message">
@@ -126,36 +80,33 @@ const ProductList = () => {
   }
 
   return (
-    <div className="product-list-container">
-      <div className="product-list-header">
-        <h2>Saree Collection ({products.length})</h2>
-        <button onClick={fetchProducts} className="refresh-btn">
-          Refresh
-        </button>
-      </div>
-      
-      <div className="product-grid">
-        <div 
-          ref={containerRef}
-          className="product-row"
-          onMouseEnter={() => {
-            setIsPaused(true);
-            isPausedRef.current = true;
-          }}
-          onMouseLeave={() => {
-            setIsPaused(false);
-            isPausedRef.current = false;
-          }}
-        >
-          {products.map((product, index) => (
-            <ProductCard 
-              key={product._id || index} 
-              product={product} 
-            />
-          ))}
+    <>
+      <FilterSidebar products={allProducts} onFilterChange={handleFilterChange} />
+      <div className="product-list-container">
+        <div className="product-list-header">
+          <h2>Our Collection</h2>
+          <div className="product-count">
+            {filteredProducts.length} {filteredProducts.length === 1 ? 'Product' : 'Products'}
+          </div>
         </div>
+
+        {filteredProducts.length === 0 ? (
+          <div className="no-results">
+            <h3>No products match your filters</h3>
+            <p>Try adjusting your search criteria</p>
+          </div>
+        ) : (
+          <div className="product-grid">
+            {filteredProducts.map((product, index) => (
+              <ProductCard
+                key={product._id || index}
+                product={product}
+              />
+            ))}
+          </div>
+        )}
       </div>
-    </div>
+    </>
   );
 };
 

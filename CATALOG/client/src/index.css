@@ -1,11 +1,20 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  font-family: 'Playfair Display', 'Georgia', serif;
+  line-height: 1.6;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  --color-gold: #d4af37;
+  --color-gold-light: #f4d03f;
+  --color-gold-dark: #b8941f;
+  --color-black: #000000;
+  --color-black-light: #1a1a1a;
+  --color-black-lighter: #2a2a2a;
+  --color-gray: #b8b8b8;
+  --color-gray-dark: #666666;
+
+  color-scheme: dark;
+  color: #ffffff;
+  background-color: #000000;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,21 +22,30 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 a {
   font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+  color: var(--color-gold);
+  text-decoration: none;
+  transition: color 0.3s ease;
 }
+
 a:hover {
-  color: #535bf2;
+  color: var(--color-gold-light);
 }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background: #000000;
+}
+
+#root {
+  width: 100%;
 }
 
 h1 {
@@ -36,33 +54,31 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
+  border-radius: 4px;
+  border: 1px solid var(--color-gold);
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: transparent;
+  color: var(--color-gold);
   cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  transition: all 0.3s ease;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+button:hover {
+  background-color: var(--color-gold);
+  color: var(--color-black);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+button:focus,
+button:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+button:active {
+  transform: translateY(0);
 }
